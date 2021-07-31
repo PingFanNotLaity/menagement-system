@@ -7,9 +7,8 @@ import ElementUi from "element-ui"
 import 'element-ui/lib/theme-chalk/index.css'
 import "@/assets/icon/icon.css"
 import axios from 'axios'
-import Mock from './mock/index'
-
-Mock.init()
+// import Mock from './mock/index'
+// Mock.init()
 Vue.prototype.$http = axios
 Vue.prototype.$message = ElementUi.Message;
 Vue.use(ElementUi)

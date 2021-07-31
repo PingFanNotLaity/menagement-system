@@ -5,5 +5,7 @@ module.exports = {
       warnings: true,
       errors: true
     }
-  }
+  },
+  publicPath: "./",
+  outputDir: process.env.outputDir,
 }

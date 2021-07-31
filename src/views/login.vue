@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import {requestLogin,getUserInfo} from "../axios/api.js"
+import {requestLogin} from "../axios/api.js"
 export default {
   data() {
     return {
@@ -57,9 +57,9 @@ export default {
         username: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
           {
-            min: 6,
+            min: 5,
             max: 15,
-            message: "长度在 6 到 15 个字符",
+            message: "长度在 5 到 15 个字符",
             trigger: ["blur"],
           },
           {
@@ -99,33 +99,33 @@ export default {
     // 表单登录
     handleLogin() {
       this.$refs.loginForm.validate(async (valid) => {
+        // 判断表单的验证规则是否为true
         if(valid) {
           let loginParams = {
             username: this.loginForm.username,
             password: this.loginForm.password
           };
-          requestLogin(loginParams).then(res => {
-            // console.log(res);
             // 根据返回的code判断是否成功
-            // let { code, message, user, token } = await requestLogin(loginParams);
-            // console.log(code,message);
-            let {code,msg,user,token} = res.data;
-            if(code === 200) {
+            let result = await requestLogin(loginParams);
+            let {code, message, user, token} = result.data;
+            if(code === 20000) {
               this.$message({
                 type: "success",
-                message: msg
+                message: message
               })
-              sessionStorage.setItem('user',JSON.stringify(user));
+              // 把用户名和角色权限存在本地存储
+              localStorage.setItem('user',JSON.stringify(user));
+              // 把token存在本地存储
               sessionStorage.setItem('token',JSON.stringify(token));
               this.reset();
-              this.$router.push({path:"/home",query:{name:user.username}})
+              this.$router.push({path:"/home"})
             }else{
               this.$message({
                 type: "error",
-                message: msg
+                message: message
               })
             }
-          })
+          // })
         }else{
           this.$message.error("登录失败")
         }
